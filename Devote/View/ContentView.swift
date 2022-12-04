@@ -36,7 +36,7 @@ struct ContentView: View {
             newItem.task = task
             newItem.completion = false
             newItem.id = UUID()
-
+            
             do {
                 try viewContext.save()
             } catch {
@@ -48,11 +48,11 @@ struct ContentView: View {
             hidekeyboard()
         }
     }
-
+    
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             offsets.map { items[$0] }.forEach(viewContext.delete)
-
+            
             do {
                 try viewContext.save()
             } catch {
@@ -66,56 +66,65 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                VStack(spacing: 16) {
-                    TextField("Type in New Tasks", text: $task)
-                        .padding()
-                        .background(Color(UIColor.systemGray6))
-                        .cornerRadius(10)
-                    
-                    Button(action: { addItem() }, label: {
-                        Spacer()
-                        Text("SAVE")
-                        Spacer()
+            ZStack {
+                VStack {
+                    VStack(spacing: 16) {
+                        TextField("Type in New Tasks", text: $task)
+                            .padding()
+                            .background(Color(UIColor.systemGray6))
+                            .cornerRadius(10)
                         
-                    })
-                    .disabled(isButtonDisabled)
+                        Button(action: { addItem() }, label: {
+                            Spacer()
+                            Text("SAVE")
+                            Spacer()
+                            
+                        })
+                        .disabled(isButtonDisabled)
+                        .padding()
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .background(Color.pink)
+                        .background(isButtonDisabled ? Color.gray : Color.pink)
+                        .cornerRadius(10)
+                        
+                    } //: VSTACK
                     .padding()
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .background(Color.pink)
-                    .background(isButtonDisabled ? Color.gray : Color.pink)
-                    .cornerRadius(10)
+                    
+                    List {
+                        ForEach(items) { item in
+                            NavigationLink {
+                                VStack (alignment: .leading){
+                                    Text(item.task ?? "")
+                                        .font(.headline)
+                                        .fontWeight(.bold)
+                                    Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                                        .font(.footnote)
+                                        .foregroundColor(.gray)
+                                } //: LIST ITEM
+                            } label: {
+                                Text(item.timestamp!, formatter: itemFormatter)
+                            }
+                        }
+                        .onDelete(perform: deleteItems)
+                    } //: LIST
+                    .listStyle(InsetGroupedListStyle())
+                    .shadow(color: Color(red: 0, green: 0, blue: 0, opacity: 0.3), radius: 12)
+                    .padding(.vertical, 0)
+                    .frame(maxWidth: 640)
                     
                 } //: VSTACK
-                .padding()
-                
-                List {
-                    ForEach(items) { item in
-                        NavigationLink {
-                            VStack (alignment: .leading){
-                                Text(item.task ?? "")
-                                    .font(.headline)
-                                    .fontWeight(.bold)
-                                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                                    .font(.footnote)
-                                    .foregroundColor(.gray)
-                            } //: LIST ITEM
-                        } label: {
-                            Text(item.timestamp!, formatter: itemFormatter)
-                        }
-                    }
-                    .onDelete(perform: deleteItems)
-                } //: LIST
-            } //: VSTACK
+            } //: ZSTACK
             .navigationBarTitle("Daily Tasks", displayMode: .large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
             } //: TOOLBAR
+            .background(backgroundGradient.ignoresSafeArea(.all))
             Text("Select an item")
         } //: NAVIGATION
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
