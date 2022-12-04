@@ -13,11 +13,10 @@ struct ContentView: View {
     // MARK: - PROPERTY
     
     @State var task: String = ""
+    @State private var showNewTaskItem: Bool = false
     
-    private var isButtonDisabled: Bool {
-        task.isEmpty
-        
-    }
+    
+    
     
     // FETCHING DATA
     @Environment(\.managedObjectContext) private var viewContext
@@ -29,25 +28,7 @@ struct ContentView: View {
     
     // MARK: - FUNCTION
     
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-            newItem.task = task
-            newItem.completion = false
-            newItem.id = UUID()
-            
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-            
-            task = ""
-            hidekeyboard()
-        }
-    }
+    
     
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
@@ -67,41 +48,51 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ZStack {
+                
+                
+                // MARK: - MAIN VIEW
+                
+                
                 VStack {
-                    VStack(spacing: 16) {
-                        TextField("Type in New Tasks", text: $task)
-                            .padding()
-                            .background(Color(UIColor.systemGray6))
-                            .cornerRadius(10)
-                        
-                        Button(action: { addItem() }, label: {
-                            Spacer()
-                            Text("SAVE")
-                            Spacer()
-                            
-                        })
-                        .disabled(isButtonDisabled)
-                        .padding()
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .background(Color.pink)
-                        .background(isButtonDisabled ? Color.gray : Color.pink)
-                        .cornerRadius(10)
-                        
-                    } //: VSTACK
-                    .padding()
+                    
+                    
+                    // MARK: - HEADER
+                    
+                    Spacer(minLength: 80)
+                    // MARK: - NEW TASK BUTTON
+                    
+                    if showNewTaskItem {
+                        NewTaskItemView()
+                    }
+                    
+                    Button(action: { showNewTaskItem = true }, label: {
+                        Image(systemName: "plus.circle")
+                            .font(.system(size: 30, weight: .semibold, design: .rounded))
+                        Text("New Task")
+                            .font(.system(size: 24, weight: .bold, design: .rounded))
+                    })
+                    
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 15)
+                    .background(LinearGradient(gradient: Gradient(colors: [Color.pink, Color.blue]), startPoint: .leading, endPoint: .trailing))
+                    .clipShape(Capsule())
+                    // MARK: - TASKS
+                    
+                    
+                    
                     
                     List {
                         ForEach(items) { item in
+                            VStack (alignment: .leading){
+                                Text(item.task ?? "")
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                                    .font(.footnote)
+                                    .foregroundColor(.gray)
+                            } //: LIST ITEM
                             NavigationLink {
-                                VStack (alignment: .leading){
-                                    Text(item.task ?? "")
-                                        .font(.headline)
-                                        .fontWeight(.bold)
-                                    Text("Item at \(item.timestamp!, formatter: itemFormatter)")
-                                        .font(.footnote)
-                                        .foregroundColor(.gray)
-                                } //: LIST ITEM
                             } label: {
                                 Text(item.timestamp!, formatter: itemFormatter)
                             }
@@ -113,16 +104,22 @@ struct ContentView: View {
                     .padding(.vertical, 0)
                     .frame(maxWidth: 640)
                     
+                    
                 } //: VSTACK
+                
+                
+                // MARK: - NEW TASK ITEM
             } //: ZSTACK
             .navigationBarTitle("Daily Tasks", displayMode: .large)
+            
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
+                    
                 }
+                
             } //: TOOLBAR
             .background(backgroundGradient.ignoresSafeArea(.all))
-            Text("Select an item")
         } //: NAVIGATION
         .navigationViewStyle(StackNavigationViewStyle())
     }

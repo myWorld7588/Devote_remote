@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CE17FDB9293D5451006605F6 /* BackgroundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE17FDB8293D5451006605F6 /* BackgroundImageView.swift */; };
+		CE17FDBB293D55E1006605F6 /* NewTaskItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE17FDBA293D55E1006605F6 /* NewTaskItemView.swift */; };
 		CE7E2215293BD93F003B93B2 /* DevoteApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7E2214293BD93F003B93B2 /* DevoteApp.swift */; };
 		CE7E2217293BD93F003B93B2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7E2216293BD93F003B93B2 /* ContentView.swift */; };
 		CE7E2219293BD940003B93B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE7E2218293BD940003B93B2 /* Assets.xcassets */; };
@@ -23,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		CE17FDB8293D5451006605F6 /* BackgroundImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImageView.swift; sourceTree = "<group>"; };
+		CE17FDBA293D55E1006605F6 /* NewTaskItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskItemView.swift; sourceTree = "<group>"; };
 		CE7E2211293BD93F003B93B2 /* Devote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Devote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE7E2214293BD93F003B93B2 /* DevoteApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevoteApp.swift; sourceTree = "<group>"; };
 		CE7E2216293BD93F003B93B2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 			children = (
 				CE7E2216293BD93F003B93B2 /* ContentView.swift */,
 				CE17FDB8293D5451006605F6 /* BackgroundImageView.swift */,
+				CE17FDBA293D55E1006605F6 /* NewTaskItemView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 				CE82A121293CFD7500409675 /* Constant.swift in Sources */,
 				CE7E2221293BD940003B93B2 /* Devote.xcdatamodeld in Sources */,
 				CE7E2215293BD93F003B93B2 /* DevoteApp.swift in Sources */,
+				CE17FDBB293D55E1006605F6 /* NewTaskItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
