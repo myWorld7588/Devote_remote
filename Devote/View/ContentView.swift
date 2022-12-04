@@ -68,7 +68,7 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 VStack(spacing: 16) {
-                    TextField("New Task", text: $task)
+                    TextField("Type in New Task", text: $task)
                         .padding()
                         .background(Color(UIColor.systemGray6))
                         .cornerRadius(10)
