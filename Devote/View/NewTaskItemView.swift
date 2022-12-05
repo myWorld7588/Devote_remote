@@ -11,8 +11,10 @@ struct NewTaskItemView: View {
     
     // MARK: - PROPERTY
     
+    @AppStorage("isDarkMode") private var isDarkMode: Bool = false
     @Environment(\.managedObjectContext) private var viewContext
     @State private var task: String = ""
+    @Binding var isShowing: Bool
     
     private var isButtonDisabled: Bool {
         task.isEmpty
@@ -36,6 +38,7 @@ struct NewTaskItemView: View {
             
             task = ""
             hidekeyboard()
+            isShowing = false
         }
     }
     
@@ -49,7 +52,7 @@ struct NewTaskItemView: View {
                     .foregroundColor(.pink)
                     .font(.system(size: 24, weight: .bold, design: .rounded))
                     .padding()
-                    .background(Color(UIColor.systemGray6))
+                    .background(isDarkMode ? Color(UIColor.tertiarySystemBackground) : Color(UIColor.secondarySystemBackground))
                     .cornerRadius(10)
                 
                 Button(action: { addItem() }, label: {
@@ -64,11 +67,10 @@ struct NewTaskItemView: View {
                 .foregroundColor(.white)
                 .background(isButtonDisabled ? Color.blue : Color.pink)
                 .cornerRadius(10)
-                
             } //: VSTACK
             .padding(.horizontal)
             .padding(.vertical, 20)
-            .background(Color.white)
+            .background(isDarkMode ? Color(UIColor.secondarySystemBackground) : Color.white)
                 .cornerRadius(16)
                 .shadow(color: Color(red: 0, green: 0, blue: 0, opacity: 0.65), radius: 24)
                 .frame(maxWidth: 640)
@@ -85,7 +87,7 @@ struct NewTaskItemView: View {
 
 struct NewTaskItemView_Previews: PreviewProvider {
     static var previews: some View {
-        NewTaskItemView()
+        NewTaskItemView(isShowing: .constant(true))
             .previewDevice("iphone 14 Pro")
             .background(Color.gray.edgesIgnoringSafeArea(.all))
     }
